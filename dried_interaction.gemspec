@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["gl-pv"]
   spec.email         = ["gleeb812812@yandex.ru"]
 
-  spec.summary       = %q{PlainQuery is a simple gem that helps you write clear and flexible query objects}
-  spec.description   = %q{PlainQuery helps in decomposing your fat ActiveRecord models and keeping your code slim and readable by extracting complex SQL queries or scopes into the separated classes that are easy to write, read and use.}
+  spec.summary       = %q{Just a simple, ready to use interactor implementation with built in validation of input params}
+  spec.description   = %q{Just a simple, ready to use interactor implementation with built in validation of input params}
   spec.homepage      = "https://github.com/gl-pv/dried_interaction"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new('>= 2.4.0')

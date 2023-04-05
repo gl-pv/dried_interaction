@@ -13,6 +13,7 @@ module DriedInteraction
       check_params_presence_in_args(contract_params, arg.keys)
 
       contract_result = contract.(arg)
+      puts contract_result.errors.messages
       return interaction_contract_error(contract_result.errors.messages) if contract_result.failure?
 
       super(arg)
@@ -32,7 +33,11 @@ module DriedInteraction
     end
 
     def interaction_contract_error(msgs)
-      raise DriedInteractionError, class: self.class.to_s, errors: Array.wrap(msgs).join('; ')
+      raise DriedInteractionError.new(class: self.class.to_s, errors: wrap_errors(msgs).join('; '))
+    end
+
+    def wrap_errors(msgs)
+      msgs.is_a?(Array) ? msgs : [msgs]
     end
   end
 end
