@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class TestInteractor
+class TestStrictInteractor
   include DriedInteraction
 
   option :opts_handler, reader: :private, default: -> { ->(value) { Success(value) } }

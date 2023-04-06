@@ -18,11 +18,6 @@ Or install it yourself as:
 
     $ gem install dried_interaction
 
-## Why it may be useful to you
-1. Keeps your business logic typed
-2. Validates interactor input data by default
-3. Includes incredible DRY stack gems by default for yours interactors
-
 ## Usage
 ### Setting up an interactor
 For setting up an interactor you need to include DriedInteraction into your class.
@@ -63,6 +58,30 @@ class PublishPost
 end
 ```
 
+### Contract options
+You can pass to contract some options which will customize contract logic.
+1. `kind`. Explains which type of validator you will use.
+Available values: `simple` (By default) and `extended`
+`simple` kind uses simple `Dry::Schema.Params`
+`extended` kind uses more complex `Dry::Validation.Contract`
+
+```rb
+  contract(kind: :simple) do ... end
+  // or
+  contract(kind: :extended) do ... end
+```
+
+2. `mode`. Explains how to handle contract validation errors.
+Available values: `strict` (By default) and `soft`
+`strict` mode raises exception when contract check fails.
+`soft`  mode returns Failure monad with error info when contract check fails.
+
+```rb
+  contract(mode: :strict) do ... end // => raise DriedInteractionError
+  // or
+  contract(mode: :soft) do ... end // => returns Failure(DriedInteractionError)
+```
+
 ### Interactor calling
 
 ```rb
@@ -77,10 +96,22 @@ PublishPost.new.call(user, params) do |interactor|
 end
 ```
 
-## Additional info
+When you use `soft` mode you can handle contract failure as divided failure case:
+```rb
+  PublishPost.new.call(user, params) do |interactor|
+  interactor.success do |post|
+    # handle success
+  end
 
-1. You have to return a monad from interactor as result.
-2. Contract failure will be handled as exception.
+  interactor.failure(DriedInteractionError) do |error|
+    #  handle contract validation error
+  end
+
+  interactor.failure do |error|
+    # handle failure
+  end
+end
+```
 
 ## Contributing
 

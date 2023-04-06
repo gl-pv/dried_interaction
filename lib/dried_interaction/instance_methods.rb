@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
+require 'dry/monads'
 require 'dried_interaction/error'
 
 module DriedInteraction
   module InstanceMethods
+    include Dry::Monads[:result]
+
     def call(*args)
       interaction_contract_error('Call method allows only one argument') if args.size != 1
 
@@ -33,7 +36,16 @@ module DriedInteraction
     end
 
     def interaction_contract_error(msgs)
-      raise DriedInteractionError.new(class: self.class.to_s, errors: wrap_errors(msgs).join('; '))
+      error = DriedInteractionError.new(class: self.class.to_s, errors: wrap_errors(msgs).join('; '))
+
+      case self.class.contract_mode
+      when :strict
+        raise error
+      when :soft
+        Failure(error)
+      else
+        raise ArgumentError
+      end
     end
 
     def wrap_errors(msgs)

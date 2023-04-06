@@ -2,7 +2,8 @@ require 'bundler/setup'
 require 'dried_interaction'
 require 'dried_interaction/error'
 
-require "#{File.dirname(__FILE__)}/support/test_interactor.rb"
+require "#{File.dirname(__FILE__)}/support/test_strict_interactor.rb"
+require "#{File.dirname(__FILE__)}/support/test_soft_interactor.rb"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
