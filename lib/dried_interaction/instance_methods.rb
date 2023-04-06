@@ -13,10 +13,10 @@ module DriedInteraction
       arg = args.first
       contract = self.class.contract_validator
       contract_params = fetch_contract_params(contract)
-      check_params_presence_in_args(contract_params, arg.keys)
+      check_result = check_params_presence_in_args(contract_params, arg.keys)
+      return check_result if check_result&.failure?
 
       contract_result = contract.(arg)
-      puts contract_result.errors.messages
       return interaction_contract_error(contract_result.errors.messages) if contract_result.failure?
 
       super(arg)

@@ -49,7 +49,7 @@ RSpec.describe DriedInteraction do
 
     context 'when contract params are valid' do
       let(:options) do
-        { req_int: 1, opt_bool: true, opt_hash: { req_h_int: 2 } }
+        { req_int: 1, opt_hash: { req_h_int: 2 } }
       end
 
       context 'when handler returns Success monad' do
@@ -66,7 +66,7 @@ RSpec.describe DriedInteraction do
 
     context 'when contract params are invalid' do
       let(:options) do
-        { req_int: 'string', opt_bool: true, opt_hash: { req_h_int: 2 } }
+        { req_int: 'string', opt_hash: { req_h_int: 2 } }
       end
 
       it { is_expected.to eq('DriedInteractionError') }

@@ -67,7 +67,7 @@ Available values: `simple` (By default) and `extended`
 
 ```rb
   contract(kind: :simple) do ... end
-  // or
+  # or
   contract(kind: :extended) do ... end
 ```
 
@@ -77,9 +77,9 @@ Available values: `strict` (By default) and `soft`
 `soft`  mode returns Failure monad with error info when contract check fails.
 
 ```rb
-  contract(mode: :strict) do ... end // => raise DriedInteractionError
-  // or
-  contract(mode: :soft) do ... end // => returns Failure(DriedInteractionError)
+  contract(mode: :strict) do ... end # => raise DriedInteractionError
+  # or
+  contract(mode: :soft) do ... end # => returns Failure(DriedInteractionError)
 ```
 
 ### Interactor calling
