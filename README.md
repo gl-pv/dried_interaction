@@ -85,7 +85,7 @@ Available values: `strict` (By default) and `soft`
 ### Interactor calling
 
 ```rb
-PublishPost.new.call(user, params) do |interactor|
+PublishPost.new.call({ user: user, params: params }) do |interactor|
   interactor.success do |post|
     # handle success
   end
@@ -98,7 +98,7 @@ end
 
 When you use `soft` mode you can handle contract failure as divided failure case:
 ```rb
-  PublishPost.new.call(user, params) do |interactor|
+  PublishPost.new.call({ user: user, params: params }) do |interactor|
   interactor.success do |post|
     # handle success
   end
