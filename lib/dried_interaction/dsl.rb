@@ -2,12 +2,11 @@
 
 require 'dry/validation'
 require 'dry/schema'
-require 'dried_interaction/instance_methods'
 
 module DriedInteraction
   module Dsl
     MODES = %i[strict soft].freeze
-    attr_accessor :contract_validator, :contract_mode, :for_method
+    attr_accessor :contract_validator, :contract_mode
 
     def contract(kind: :simple, mode: MODES.first, &block)
       @contract_mode = resolve_contract_mode(mode)
