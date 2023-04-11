@@ -72,4 +72,33 @@ RSpec.describe DriedInteraction do
       it { is_expected.to eq('DriedInteractionError') }
     end
   end
+
+  describe 'interactor with custom schema' do
+    subject { CustomSchemaInteractor.new(handlers).call(options) }
+
+    context 'when contract params are valid' do
+      let(:options) do
+        { req_int: 1, opt_hash: { req_h_int: 2 } }
+      end
+
+      context 'when handler returns Success monad' do
+        it { is_expected.to eq(Success(options)) }
+      end
+
+      context 'when handler returns Failure monad' do
+        let(:expected_error) { 'Error message' }
+        let(:handlers) { { opts_handler: ->(_value) { Failure(expected_error) } } }
+
+        it { is_expected.to eq(Failure(expected_error)) }
+      end
+    end
+
+    context 'when contract params are invalid' do
+      let(:options) do
+        { req_int: 'string', opt_hash: { req_h_int: 2 } }
+      end
+
+      it { expect { subject }.to raise_error { DriedInteractionError } }
+    end
+  end
 end

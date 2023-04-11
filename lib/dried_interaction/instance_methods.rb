@@ -9,15 +9,17 @@ module DriedInteraction
 
     def call(*args)
       interaction_contract_error('Call method allows only one argument') if args.size != 1
-
       arg = args.first
+
       contract = self.class.contract_validator
+      interaction_contract_error('Contract must be filled') if arg && !contract
+
       contract_params = fetch_contract_params(contract)
       check_result = check_params_presence_in_args(contract_params, arg.keys)
       return check_result if check_result&.failure?
 
       contract_result = contract.(arg)
-      return interaction_contract_error(contract_result.errors.messages) if contract_result.failure?
+      return interaction_contract_error(contract_result.errors) if contract_result.failure?
 
       super(arg)
     end
@@ -36,7 +38,7 @@ module DriedInteraction
     end
 
     def interaction_contract_error(msgs)
-      error = DriedInteractionError.new(class: self.class.to_s, errors: wrap_errors(msgs).join('; '))
+      error = DriedInteractionError.new(class: self.class.to_s, errors: msgs)
 
       case self.class.contract_mode
       when :strict
@@ -46,10 +48,6 @@ module DriedInteraction
       else
         raise ArgumentError
       end
-    end
-
-    def wrap_errors(msgs)
-      msgs.is_a?(Array) ? msgs : [msgs]
     end
   end
 end
