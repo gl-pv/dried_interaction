@@ -13,12 +13,11 @@ module DriedInteraction
       @contract_validator = resolve_contract_validator(kind, &block)
     end
 
-    def soft_contract(args = {}, &block)
-      contract(args.merge(mode: :soft), &block)
-    end
-
-    def strict_contract(args = {}, &block)
-      contract(args.merge(mode: :strict))
+    # soft_contract, strict_contract
+    MODES.each do |mode|
+      define_method("#{mode}_contract") do |args = {}, &block|
+        contract(args.merge(mode: mode), &block)
+      end
     end
 
     private

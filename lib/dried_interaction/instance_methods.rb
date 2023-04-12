@@ -8,11 +8,11 @@ module DriedInteraction
     include Dry::Monads[:result]
 
     def call(*args)
-      interaction_contract_error('Call method allows only one argument') if args.size != 1
+      return interaction_contract_error('Call method allows only one argument') if args.size != 1
       arg = args.first
 
       contract = self.class.contract_validator
-      interaction_contract_error('Contract must be filled') if arg && !contract
+      return interaction_contract_error('Contract must be filled') if arg && !contract
 
       contract_params = fetch_contract_params(contract)
       check_result = check_params_presence_in_args(contract_params, arg.keys)
